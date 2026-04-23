@@ -87,17 +87,6 @@
             line-height: 1.2;
         }
         
-        .term-badge {
-            display: inline-block;
-            background: var(--accent-color);
-            color: var(--primary-color);
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 0.75rem;
-            font-weight: 600;
-            margin-top: 5px;
-        }
-        
         .student-info {
             background: linear-gradient(135deg, #f0f4f8 0%, #e3eaf3 100%);
             padding: 12px;
@@ -492,7 +481,6 @@
             <img src="https://i.ibb.co/LxSJnMj/MALAWI-GOVERNMENT-3.png" alt="School Logo" class="school-logo">
             <h1 class="school-title" id="schoolName">LUNZU SECONDARY SCHOOL</h1>
             <h2 class="sub-title" id="academicHeader">Loading...</h2>
-            <div id="termBadge" class="term-badge">Loading...</div>
         </div>
         
         <div id="feeAlertContainer"></div>
@@ -593,7 +581,7 @@
     
     <script>
         // Configuration
-        const GAS_URL = 'https://script.google.com/macros/s/AKfycbyubTTuxdfktyMN51pAOW3vPJpOFldWR5XcN6qYempqvcis-Pu6Y7esUxWAycO0Fh1jQA/exec';
+        const GAS_URL = 'https://script.google.com/macros/s/AKfycbwSe_HeUAigVjBiN-rmcq0FPiJRKsLBBtw2VGGhLWlMCrIvT3WeQ0MpjdMdI4HDGnkbZQ/exec';
         
         // URL Parameters
         const urlParams = new URLSearchParams(window.location.search);
@@ -718,12 +706,9 @@
                 schoolNameEl.textContent = config.schoolName || "LUNZU SECONDARY SCHOOL";
             }
             
-            // Update academic header
-            const academicHeader = `${results.academicYear || config.academicYear || '2025-2026'} ${results.term || config.term || 'RESULTS'} ${config.examType || ''}`;
+            // Update academic header - Single line only (no duplicate term badge)
+            const academicHeader = `${results.academicYear || config.academicYear || '2025-2026'} ${results.term || config.term || 'RESULTS'}`;
             document.getElementById('academicHeader').textContent = academicHeader.trim();
-            
-            // Update term badge
-            document.getElementById('termBadge').textContent = results.termDisplay || `${results.academicYear} ${results.term}`;
             
             // Check for fee balance warning
             if (results.feeBalance !== undefined && results.feeBalance !== null && results.feeBalance > 0) {
@@ -812,7 +797,7 @@
             document.querySelector('.results-container').style.display = 'flex';
             
             // Update page title
-            document.title = `${results.name || 'Student'} - Results (${results.termDisplay || results.term}) - ${schoolNameEl.textContent}`;
+            document.title = `${results.name || 'Student'} - ${academicHeader.trim()} - ${schoolNameEl.textContent}`;
         }
         
         function escapeHtml(text) {
