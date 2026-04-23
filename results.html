@@ -517,67 +517,67 @@
                         </tr>
                     </thead>
                     <tbody id="resultsBody">
-                        <tr><td colspan="6" class="text-center py-4">Loading subjects...</td></tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
+                        <tr><td colspan="6" class="text-center py-4">Loading subjects...<\/td><\/tr>
+                    <\/tbody>
+                <\/table>
+            <\/div>
+        <\/div>
         
         <div class="row mb-3">
             <div class="col-md-6" id="totalMarksContainer" style="display: none;">
                 <div class="alert alert-primary p-2">
-                    <strong><i class="fas fa-calculator me-2"></i>TOTAL MARKS:</strong> 
-                    <span id="totalMarks" class="ms-2">-</span>
-                </div>
-            </div>
+                    <strong><i class="fas fa-calculator me-2"><\/i>TOTAL MARKS:<\/strong> 
+                    <span id="totalMarks" class="ms-2">-<\/span>
+                <\/div>
+            <\/div>
             <div class="col-md-6" id="totalPointsContainer" style="display: none;">
                 <div class="alert alert-primary p-2">
-                    <strong><i class="fas fa-chart-line me-2"></i>TOTAL POINTS:</strong> 
-                    <span id="totalPoints" class="ms-2">-</span>
-                </div>
-            </div>
-        </div>
+                    <strong><i class="fas fa-chart-line me-2"><\/i>TOTAL POINTS:<\/strong> 
+                    <span id="totalPoints" class="ms-2">-<\/span>
+                <\/div>
+            <\/div>
+        <\/div>
         
         <div class="remarks-section">
-            <h4><i class="fas fa-comment me-2"></i>REMARKS</h4>
-            <p class="mb-0" id="remarks">-</p>
-        </div>
+            <h4><i class="fas fa-comment me-2"><\/i>REMARKS<\/h4>
+            <p class="mb-0" id="remarks">-<\/p>
+        <\/div>
         
         <div class="footer-section">
             <div class="row">
                 <div class="col-md-6">
-                    <h5 class="footer-title"><i class="fas fa-money-bill-wave me-2"></i>SCHOOL FEES</h5>
-                    <p class="footer-info" id="feesInfo">-</p>
-                    <p class="footer-info" id="accountInfo">-</p>
-                    <p class="footer-info"><i class="fas fa-university me-2"></i>ACC TYPE: CURRENT | BANK: FDH | LUNZU BRANCH</p>
-                </div>
+                    <h5 class="footer-title"><i class="fas fa-money-bill-wave me-2"><\/i>SCHOOL FEES<\/h5>
+                    <p class="footer-info" id="feesInfo">-<\/p>
+                    <p class="footer-info" id="accountInfo">-<\/p>
+                    <p class="footer-info"><i class="fas fa-university me-2"><\/i>ACC TYPE: CURRENT | BANK: FDH | LUNZU BRANCH<\/p>
+                <\/div>
                 <div class="col-md-6">
-                    <h5 class="footer-title"><i class="fas fa-calendar-alt me-2"></i>IMPORTANT DATES</h5>
-                    <p class="footer-info"><strong>Next Term Starts:</strong> <span id="nextTermStart">-</span></p>
-                    <h5 class="footer-title mt-3"><i class="fas fa-map-marker-alt me-2"></i>SCHOOL ADDRESS</h5>
-                    <p class="footer-info" id="schoolAddress">-</p>
-                    <h5 class="footer-title mt-3"><i class="fas fa-info-circle me-2"></i>GOVERNMENT POLICY</h5>
-                    <p class="footer-info" id="governmentPolicy">-</p>
-                </div>
-            </div>
-        </div>
+                    <h5 class="footer-title"><i class="fas fa-calendar-alt me-2"><\/i>IMPORTANT DATES<\/h5>
+                    <p class="footer-info"><strong>Next Term Starts:<\/strong> <span id="nextTermStart">-<\/span><\/p>
+                    <h5 class="footer-title mt-3"><i class="fas fa-map-marker-alt me-2"><\/i>SCHOOL ADDRESS<\/h5>
+                    <p class="footer-info" id="schoolAddress">-<\/p>
+                    <h5 class="footer-title mt-3"><i class="fas fa-info-circle me-2"><\/i>GOVERNMENT POLICY<\/h5>
+                    <p class="footer-info" id="governmentPolicy">-<\/p>
+                <\/div>
+            <\/div>
+        <\/div>
         
         <div class="action-buttons">
             <button onclick="printResults()" class="btn-action btn-print">
-                <i class="fas fa-print"></i> Print Results
-            </button>
+                <i class="fas fa-print"><\/i> Print Results
+            <\/button>
             <button onclick="closeWindow()" class="btn-action btn-close">
-                <i class="fas fa-times"></i> Close Window
-            </button>
+                <i class="fas fa-times"><\/i> Close Window
+            <\/button>
             <button onclick="downloadPDF()" class="btn-action btn-print" id="downloadPdfBtn">
-                <i class="fas fa-download"></i> Download PDF
-            </button>
-        </div>
-    </div>
+                <i class="fas fa-download"><\/i> Download PDF
+            <\/button>
+        <\/div>
+    <\/div>
     
-    <div id="errorContainer" style="display: none;"></div>
+    <div id="errorContainer" style="display: none;"><\/div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"><\/script>
     
     <script>
         // Configuration
@@ -706,9 +706,21 @@
                 schoolNameEl.textContent = config.schoolName || "LUNZU SECONDARY SCHOOL";
             }
             
-            // Update academic header - Single line only (no duplicate term badge)
-            const academicHeader = `${results.academicYear || config.academicYear || '2025-2026'} ${results.term || config.term || 'RESULTS'}`;
-            document.getElementById('academicHeader').textContent = academicHeader.trim();
+            // IMPORTANT FIX: Build academic header with term information
+            // Use the term from results (e.g., "END OF TERM 1" or "END OF TERM 2")
+            let academicYear = results.academicYear || config.academicYear || '2025-2026';
+            let term = results.term || config.term || '';
+            let examType = config.examType || 'RESULTS';
+            
+            // Build the header: "2025-2026 END OF TERM 1 RESULTS"
+            let academicHeaderText = academicYear;
+            if (term) {
+                academicHeaderText += ' ' + term;
+            }
+            academicHeaderText += ' ' + examType;
+            
+            document.getElementById('academicHeader').textContent = academicHeaderText.trim();
+            console.log('Academic header set to:', academicHeaderText);
             
             // Check for fee balance warning
             if (results.feeBalance !== undefined && results.feeBalance !== null && results.feeBalance > 0) {
@@ -751,12 +763,12 @@
                     
                     const row = document.createElement('tr');
                     row.innerHTML = `
-                        <td><strong>${escapeHtml(subject.name || '-')}</strong></td>
-                        <td>${score !== "" ? score : '-'}</td>
-                        <td><span class="grade-badge ${gradeClass}">${grade || '-'}</span></td>
-                        <td>${position}</td>
-                        <td>${average}</td>
-                        <td>${comment || '-'}</td>
+                        <td><strong>${escapeHtml(subject.name || '-')}<\/strong><\/td>
+                        <td>${score !== "" ? score : '-'}<\/td>
+                        <td><span class="grade-badge ${gradeClass}">${grade || '-'}<\/span><\/td>
+                        <td>${position}<\/td>
+                        <td>${average}<\/td>
+                        <td>${comment || '-'}<\/td>
                     `;
                     resultsBody.appendChild(row);
                 });
@@ -771,7 +783,7 @@
                     document.getElementById('totalMarksContainer').style.display = 'none';
                 }
             } else {
-                resultsBody.innerHTML = '<tr><td colspan="6" class="text-center py-4"><i class="fas fa-exclamation-triangle me-2"></i>No subject data available</td></tr>';
+                resultsBody.innerHTML = '<tr><td colspan="6" class="text-center py-4"><i class="fas fa-exclamation-triangle me-2"></i>No subject data available<\/td><\/tr>';
             }
             
             // Update remarks
@@ -797,7 +809,7 @@
             document.querySelector('.results-container').style.display = 'flex';
             
             // Update page title
-            document.title = `${results.name || 'Student'} - ${academicHeader.trim()} - ${schoolNameEl.textContent}`;
+            document.title = `${results.name || 'Student'} - ${academicHeaderText} - ${schoolNameEl.textContent}`;
         }
         
         function escapeHtml(text) {
@@ -906,7 +918,7 @@
                 }
                 
                 if (typeof pdfResponse === 'string' && pdfResponse.length > 0) {
-                    const termSuffix = (studentResults.termDisplay || studentResults.term || 'Results').replace(/\s+/g, '_');
+                    const termSuffix = (studentResults.term || 'Results').replace(/\s+/g, '_');
                     const fileName = `${studentResults.name.replace(/\s+/g, '_')}_${studentResults.studentClass.replace(/\s+/g, '_')}_${termSuffix}.pdf`;
                     downloadBase64AsPDF(pdfResponse, fileName);
                     alert('PDF downloaded successfully!');
@@ -1007,6 +1019,6 @@
         window.addEventListener('pageshow', function(event) {
             if (event.persisted) location.reload();
         });
-    </script>
-</body>
-</html>
+    <\/script>
+<\/body>
+<\/html>
